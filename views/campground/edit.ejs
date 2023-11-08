@@ -1,0 +1,77 @@
+<% layout('layouts/boilerplate') %>
+
+<!-- fjfbhfjfbfh -->
+
+<div class="row">
+  <h1 class="text-center">Edit Campground</h1>
+  <div class="col-6 offset-3">
+    <form
+      action="/campground/<%= campground._id %>?_method=patch"
+      method="post"
+    >
+      <!-- <form method="post" action="/campground"> -->
+      <div class="mb-3">
+        <label class="form-label" for="title">Title</label>
+        <input
+          class="form-control"
+          type="text"
+          name="campground[title]"
+          id="title"
+          value="<%= campground.title %>"
+          placeholder="enter title"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="location" class="form-label">location</label>
+        <input
+          class="form-control"
+          type="text"
+          name="campground[location]"
+          id="location"
+          value="<%= campground.location %>"
+          placeholder="enter description "
+        />
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Image URL</label>
+        <input
+          class="form-control"
+          type="text"
+          name="campground[image]"
+          id="image"
+          value="<%= campground.image %>"
+          placeholder="enter Image URL "
+        />
+      </div>
+      <div class="col-auto mb-3">
+        <label class="form-label" for="price">Price</label>
+        <div class="input-group">
+          <div class="input-group-text">$</div>
+          <input
+            type="text"
+            class="form-control"
+            id="price"
+            value="<%= campground.price %>"
+            name="campground[price]"
+            placeholder="0.00"
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          type="text"
+          name="campground[description]"
+          id="description"
+          placeholder="enter Description "
+        >
+<%= campground.description %></textarea
+        >
+      </div>
+      <button class="btn btn-info mb-3 mt-3">Update</button>
+      <a class="btn btn-primary m-3" href="/campground">All Campground</a>
+      &nbsp;
+    </form>
+  </div>
+</div>
