@@ -8,6 +8,8 @@
     <form
       action="/campground/<%= campground._id %>?_method=patch"
       method="post"
+      class="vadidate-form"
+      novalidate
     >
       <!-- <form method="post" action="/campground"> -->
       <div class="mb-3">
@@ -19,7 +21,9 @@
           id="title"
           value="<%= campground.title %>"
           placeholder="enter title"
+          required
         />
+        <div class="valid-feedback">Looks good.</div>
       </div>
       <div class="mb-3">
         <label for="location" class="form-label">location</label>
@@ -30,7 +34,9 @@
           id="location"
           value="<%= campground.location %>"
           placeholder="enter description "
+          required
         />
+        <div class="valid-feedback">Looks good.</div>
       </div>
       <div class="mb-3">
         <label for="image" class="form-label">Image URL</label>
@@ -41,7 +47,9 @@
           id="image"
           value="<%= campground.image %>"
           placeholder="enter Image URL "
+          required
         />
+        <div class="valid-feedback">Looks good.</div>
       </div>
       <div class="col-auto mb-3">
         <label class="form-label" for="price">Price</label>
@@ -54,7 +62,9 @@
             value="<%= campground.price %>"
             name="campground[price]"
             placeholder="0.00"
+            required
           />
+          <div class="valid-feedback">Looks good.</div>
         </div>
       </div>
       <div class="mb-3">
@@ -65,9 +75,11 @@
           name="campground[description]"
           id="description"
           placeholder="enter Description "
+          required
         >
 <%= campground.description %></textarea
         >
+        <div class="valid-feedback">Looks good.</div>
       </div>
       <button class="btn btn-info mb-3 mt-3">Update</button>
       <a class="btn btn-primary m-3" href="/campground">All Campground</a>
@@ -75,3 +87,27 @@
     </form>
   </div>
 </div>
+<!-- <script>
+  (() => {
+    "use strict";
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll(".vadidate-form");
+
+    // Loop over them and prevent submission
+    Array.from(forms).forEach((form) => {
+      form.addEventListener(
+        "submit",
+        (event) => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+
+          form.classList.add("was-validated");
+        },
+        false
+      );
+    });
+  })();
+</script> -->
