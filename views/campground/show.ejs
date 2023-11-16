@@ -3,7 +3,7 @@
 <!--  -->
 
 <div class="row">
-  <div class="col-6 offset-3">
+  <div class="col-6">
     <div class="card mb-4">
       <img src="<%= campground.image %>" class="card-img-top" alt="..." />
       <div class="card-body">
@@ -36,7 +36,59 @@
       <div class="card-footer text-body-secondary">2 days ago</div>
     </div>
   </div>
+  <div class="col-6">
+    <h2>Leave a Review</h2>
+    <form
+      method="post"
+      action="/campground/<%= campground._id %>/reviews"
+      novalidate
+      class="vadidate-form mb-3"
+    >
+      <div class="mb-3">
+        <label for="range" class="form-label">Review Rating</label>
+        <!-- <div class="valid-feedback">looks good</div> -->
+        <input
+          type="range"
+          id="range"
+          name="review[rating]"
+          class="form-range"
+          min="1"
+          max="5"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="body" class="form-label">Give Review</label>
+        <!-- <div class="valid-feedback">Looks good.</div> -->
+        <textarea
+          class="form-control"
+          name="review[body]"
+          id="body"
+          cols="30"
+          rows="3"
+          required
+        ></textarea>
+        <div class="valid-feedback">looks good</div>
+      </div>
+      <button class="btn btn-success">Submit</button>
+    </form>
+    <% for(review of campground.reviews) {%>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Rating: <%= review.rating %></h5>
+        <p>Review: <%= review.body %></p>
+        <form
+          action="/campground/<%= campground._id %>/reviews/<%= review._id %>?_method=delete"
+          method="post"
+        >
+          <button class="btn-sm btn btn-danger">hit</button>
+        </form>
+      </div>
+    </div>
+    <% } %>
+  </div>
 </div>
+<div class="row"></div>
+<div class="mb-5"></div>
 
 <!--  -->
 
