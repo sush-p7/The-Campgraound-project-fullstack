@@ -7,10 +7,12 @@ const path = require('path')
 const ExpressError = require('./resources/expressError')
 const campGroundR = require('./routes/campground') 
 const reviewR = require('./routes/reviews') 
+const flash = require('connect-flash')
 
 
 
 const app = express()
+app.use(flash())
 mongoose.connect('mongodb://127.0.0.1:27017/camp').then(()=>{
     console.log('Connection established');
 }).catch(err => console.log('Error connecting,error:',err));
@@ -19,10 +21,20 @@ const config = {
     secret : 'sush.studio',
     resave: false,
     saveUninitialized: true,
+    cookie : {
+        httpOnly : true,
+        expires: Date.now() + 1000 * 24 * 60 * 24 * 7,
+        maxAge:  1000 * 24 * 60 * 24 * 7,
+    }
 }
 
 app.use(sessions(config))
-
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    res.locals.danger = req.flash('danger'); 
+    next();
+})
 app.engine('ejs',ejsMate)
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'views'))
