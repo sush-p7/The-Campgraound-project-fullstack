@@ -7,9 +7,12 @@ const path = require('path')
 const ExpressError = require('./resources/expressError')
 const campGroundR = require('./routes/campground') 
 const reviewR = require('./routes/reviews') 
+const userRouter = require('./routes/user')
+
 const flash = require('connect-flash')
-
-
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
+const User = require('./models/user')
 
 const app = express()
 app.use(flash())
@@ -27,14 +30,23 @@ const config = {
         maxAge:  1000 * 24 * 60 * 24 * 7,
     }
 }
-
 app.use(sessions(config))
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use( new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
+    res.locals.danger = req.flash('danger'); 
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
-    res.locals.danger = req.flash('danger'); 
     next();
 })
+
+
+
 app.engine('ejs',ejsMate)
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'views'))
@@ -44,11 +56,31 @@ app.get('/',(req,res)=>{
     // res.send('Hello')
     res.render('home')
 })
+
+
+
 app.use(express.static(path.join(__dirname,'public')));
+
+
+
+app.use('/',userRouter)
 app.use('/campground',campGroundR)
 app.use('/campground/:id/reviews', reviewR );
 
 
+
+
+
+
+
+app.get('/fake', async (req, res)=>{
+    const user = new User({
+        email: 'sushant@gmail.com',
+        username: 'sushant',
+    });
+    const newuser = await User.register(user,'mom');
+    res.send(newuser)
+})
 
 
 app.all('*',(req, res, next) =>{
@@ -61,6 +93,14 @@ app.use((error , req, res, next)=>{
     res.status(statuscode).render('error',{error});
     // res.send('Something went wrong');
 });
+
+
+
+
+
+
+
+
 
 app.listen(3000,()=>{
     console.log('listening on port 3000 ')

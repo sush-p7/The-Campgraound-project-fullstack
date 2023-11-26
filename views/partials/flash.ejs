@@ -8,7 +8,17 @@
     aria-label="Close"
   ></button>
 </div>
-<% } %> <% if ((danger && danger.length) || (error && error.length)){ %>
+<% } %> <% if ((error && error.length)){ %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <%= error %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+<% } %> <% if ((danger && danger.length)){ %>
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
   <%= danger %>
   <button
@@ -19,3 +29,5 @@
   ></button>
 </div>
 <% } %>
+
+<!-- || (error && error.length) -->
