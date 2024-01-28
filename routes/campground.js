@@ -4,6 +4,7 @@ const {campgroundSchema}  = require('../schemas.js')
 const catchAsync = require('../resources/catchAsync')
 const ExpressError = require('../resources/expressError')
 const Campground = require('../models/campground')
+const {isLogedIn} = require('../middleware/middleware')
 // const passport = require('passport')
 const validateCampground = (req, res, next) =>{
     
@@ -19,11 +20,8 @@ router.get('/', catchAsync( async (req , res , next)=>{
     const campgrounds = await Campground.find({})
     res.render('campground/index',{campgrounds});
 }));
-router.get('/new',(req,res,next)=>{
-    if(!req.isAuthenticated()){
-        req.flash('error','You must be logged in')
-        return res.redirect('/login');
-    }
+router.get('/new',isLogedIn,(req,res,next)=>{
+    
     res.render('campground/new');
 });
 router.get('/:id',  catchAsync( async (req,res,next)=>{
@@ -37,7 +35,7 @@ router.get('/:id',  catchAsync( async (req,res,next)=>{
     // console.log({campground})
     res.render('campground/show',{campground});
 }));
-router.post('/' ,validateCampground, catchAsync( async (req,res,next)=>{
+router.post('/' ,isLogedIn,validateCampground, catchAsync( async (req,res,next)=>{
     // if (!req.body.campground) throw new ExpressError('invalid campground data',400);
     
     const campground = new Campground(req.body.campground)
